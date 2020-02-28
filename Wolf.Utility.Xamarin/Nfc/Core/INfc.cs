@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ultz.XNFC;
 using Wolf.Utility.Xamarin.Nfc.Core.Enum;
 
 namespace Wolf.Utility.Xamarin.Nfc.Core

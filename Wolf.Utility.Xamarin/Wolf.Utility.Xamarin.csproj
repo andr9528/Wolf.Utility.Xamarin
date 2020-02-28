@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -13,10 +13,26 @@
   <ItemGroup>
     <EmbeddedResource Include="TriggerActions\Resources\hidepasswordicon.png" />
     <EmbeddedResource Include="TriggerActions\Resources\showpasswordicon.png" />
-    <EmbeddedResource Include="Views\PopupPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
+    <PackageReference Include="Ultz.XNFC" Version="1.1.0" />
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.936621-pre1" />
+    <PackageReference Include="XLabs.Forms" Version="2.0.5782" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Wolf.Utility.Main\Wolf.Utility.Main\Wolf.Utility.Main.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>..\..\..\..\..\Microsoft\Xamarin\NuGet\xamarin.forms\4.4.0.936621-pre1\lib\MonoAndroid90\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>..\..\..\..\..\Microsoft\Xamarin\NuGet\xamarin.forms\4.4.0.936621-pre1\lib\MonoAndroid90\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +41,7 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Views\PopupPage.xaml.cs">
+    <Compile Update="Views\AdvancedPopupPage.cs">
       <SubType>Code</SubType>
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

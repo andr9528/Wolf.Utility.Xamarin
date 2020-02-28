@@ -1,4 +1,4 @@
-﻿namespace Wolf.Utility.Main.Xamarin.Services
+﻿namespace Wolf.Utility.Xamarin.Services
 {
     public interface IKeyboardService
     {

@@ -1,4 +1,5 @@
 ﻿using Wolf.Utility.Xamarin.Services;
+using Xamarin.Forms;
 
 [assembly: Dependency(typeof(ServiceCollection))]
 namespace Wolf.Utility.Xamarin.Services

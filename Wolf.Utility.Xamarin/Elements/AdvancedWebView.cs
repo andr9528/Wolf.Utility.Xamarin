@@ -2,6 +2,8 @@
 using System.Text;
 using System.Windows.Input;
 using Wolf.Utility.Xamarin.Elements.Events;
+using Xamarin.Forms;
+using XLabs.Forms.Controls;
 
 namespace Wolf.Utility.Xamarin.Elements
 {

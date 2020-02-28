@@ -1,4 +1,6 @@
-﻿namespace Wolf.Utility.Xamarin.Elements
+﻿using Xamarin.Forms;
+
+namespace Wolf.Utility.Xamarin.Elements
 {
 
     public class AdvancedTabbedPage : TabbedPage

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Rg.Plugins.Popup.Animations;
+using Rg.Plugins.Popup.Enums;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Wolf.Utility.Xamarin.Views
 {
     // Source: https://www.c-sharpcorner.com/article/alert-with-rg-plugins-popuppage/
     // Source: https://github.com/rotorgames/Rg.Plugins.Popup
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PopupPage : Rg.Plugins.Popup.Pages.PopupPage
+    public partial class AdvancedPopupPage : Rg.Plugins.Popup.Pages.PopupPage
     {
         private TaskCompletionSource<bool> taskCompletionSource;
         public Task PopupClosedTask => taskCompletionSource.Task;
@@ -17,7 +21,7 @@ namespace Wolf.Utility.Xamarin.Views
         public delegate void CallbackDelegate(bool wasSuccessful);
         public CallbackDelegate CallbackMethod { get; private set; }
 
-        public PopupPage()
+        public AdvancedPopupPage()
         {
             InitializeComponent();
         }
@@ -29,7 +33,7 @@ namespace Wolf.Utility.Xamarin.Views
         /// <param name="color"></param>
         /// <param name="lifeTime"></param>
         /// <param name="shouldImplode"></param>
-        public PopupPage(string message, Color color, TimeSpan lifeTime = default, bool shouldImplode = false)
+        public AdvancedPopupPage(string message, Color color, TimeSpan lifeTime = default, bool shouldImplode = false)
         {
             InitializeComponent();
 
@@ -52,7 +56,7 @@ namespace Wolf.Utility.Xamarin.Views
             };
         }
 
-        public PopupPage(string message, CallbackDelegate callbackAction, (string yes, string no) buttonTexts, Color color = default)
+        public AdvancedPopupPage(string message, CallbackDelegate callbackAction, (string yes, string no) buttonTexts, Color color = default)
         {
             InitializeComponent();
             var (yes, no) = buttonTexts;

@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using Wolf.Utility.Xamarin.TriggerActions.Resources;
+using Xamarin.Forms;
 
 namespace Wolf.Utility.Xamarin.TriggerActions
 {
