@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="TriggerActions\Resources\hidepasswordicon.png" />
+    <None Remove="TriggerActions\Resources\showpasswordicon.png" />
+    <None Remove="Views\PopupPage.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TriggerActions\Resources\hidepasswordicon.png" />
+    <EmbeddedResource Include="TriggerActions\Resources\showpasswordicon.png" />
+    <EmbeddedResource Include="Views\PopupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="TriggerActions\Resources\Icons.Designer.cs">
+      <DependentUpon>Icons.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Views\PopupPage.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="TriggerActions\Resources\Icons.resx">
+      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
