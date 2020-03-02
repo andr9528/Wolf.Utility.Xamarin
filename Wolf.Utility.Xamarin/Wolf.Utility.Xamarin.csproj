@@ -43,7 +43,7 @@
     </Compile>
     <Compile Update="Views\AdvancedPopupPage.cs">
       <SubType>Code</SubType>
-      <DependentUpon>%(Filename)</DependentUpon>
+      <DependentUpon>AdvancedPopupPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -51,6 +51,9 @@
     <EmbeddedResource Update="TriggerActions\Resources\Icons.resx">
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TestPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

@@ -18,16 +18,16 @@ namespace Wolf.Utility.Xamarin.Views
         private readonly bool _shouldImplode = false;
         private readonly TimeSpan _lifeTime;
 
-        public delegate void CallbackDelegate(bool wasSuccessful);
-        public CallbackDelegate CallbackMethod { get; private set; }
+        public delegate void CallbackConfirmationDelegate(bool wasSuccessful);
+        public CallbackConfirmationDelegate CallbackConfirmationMethod { get; private set; }
 
-        public AdvancedPopupPage()
-        {
-            InitializeComponent();
-        }
+        public delegate void CallbackLoginDelegate(bool save, (string username, string password) user);
+        public CallbackLoginDelegate CallbackLoginMethod { get; private set; }
+
 
         /// <summary>
-        /// if it is set to implode, but no timespan is given, then it defaults to a 2 sec lifetime.
+        /// Use this one to display a notification in the top of device.
+        /// If it is set to implode, but no timespan is given, then it defaults to a 2 sec lifetime. 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="color"></param>
@@ -43,41 +43,62 @@ namespace Wolf.Utility.Xamarin.Views
                 _lifeTime = TimeSpan.FromSeconds(2);
             else
                 _lifeTime = lifeTime;
-
-            MessageLabel.Text = message;
+            
             MainStack.BackgroundColor = color;
 
             Animation = new ScaleAnimation()
             {
-                PositionIn = MoveAnimationOptions.Top, PositionOut = MoveAnimationOptions.Top, 
-                DurationIn = 400, DurationOut = 300, 
-                EasingIn = Easing.SinOut, EasingOut = Easing.SinIn, 
-                ScaleIn = 1.2, ScaleOut = 0.8, HasBackgroundAnimation = true
+                PositionIn = MoveAnimationOptions.Top,
+                PositionOut = MoveAnimationOptions.Top,
+                DurationIn = 400,
+                DurationOut = 300,
+                EasingIn = Easing.SinOut,
+                EasingOut = Easing.SinIn,
+                ScaleIn = 1.2,
+                ScaleOut = 0.8,
+                HasBackgroundAnimation = true
             };
+
+            SetupStack(LayoutOptions.Start, LayoutOptions.CenterAndExpand);
+            SetupGrid(1, 1);
+
+            MessageLabel.Text = message;
+            MainGrid.Children.Add(MessageLabel, 0,0);
         }
 
-        public AdvancedPopupPage(string message, CallbackDelegate callbackAction, (string yes, string no) buttonTexts, Color color = default)
+        /// <summary>
+        /// Use this one to display a confirmation notification in the center of the screen.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="callbackConfirmationAction"></param>
+        /// <param name="buttonTexts"></param>
+        /// <param name="color"></param>
+        public AdvancedPopupPage(string message, CallbackConfirmationDelegate callbackConfirmationAction, (string yes, string no) buttonTexts, Color color = default)
         {
             InitializeComponent();
             var (yes, no) = buttonTexts;
-
-            MessageLabel.Text = message;
+            
             MainStack.BackgroundColor = color;
-            CallbackMethod = callbackAction;
+            CallbackConfirmationMethod = callbackConfirmationAction;
 
             Animation = new ScaleAnimation()
             {
-                PositionIn = MoveAnimationOptions.Center, PositionOut = MoveAnimationOptions.Center,
-                DurationIn = 400, DurationOut = 300,
-                EasingIn = Easing.SinOut, EasingOut = Easing.SinIn,
-                ScaleIn = 1.2, ScaleOut = 0.8, HasBackgroundAnimation = true
+                PositionIn = MoveAnimationOptions.Center, 
+                PositionOut = MoveAnimationOptions.Center,
+                DurationIn = 400, 
+                DurationOut = 300,
+                EasingIn = Easing.SinOut, 
+                EasingOut = Easing.SinIn,
+                ScaleIn = 1.2, 
+                ScaleOut = 0.8, 
+                HasBackgroundAnimation = true
             };
 
-            MainStack.VerticalOptions = LayoutOptions.Center;
-            MainStack.HorizontalOptions = LayoutOptions.Center;
-            MainStack.WidthRequest = 600;
+            SetupStack(LayoutOptions.Center, LayoutOptions.Center,600);
+            SetupGrid(2, 2);
 
-            MainGrid.RowDefinitions.Add(new RowDefinition(){Height = new GridLength(50, GridUnitType.Star)});
+            MessageLabel.Text = message;
+            MainGrid.Children.Add(MessageLabel, 0, 2, 0, 1);
 
             OkButton.Text = yes;
             OkButton.WidthRequest = 150;
@@ -88,6 +109,88 @@ namespace Wolf.Utility.Xamarin.Views
             MainGrid.Children.Add(CancelButton, 1, 1);
         }
         
+        /// <summary>
+        /// Use this one to request Login information.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="callbackLoginAction"></param>
+        /// <param name="successButton"></param>
+        /// <param name="saveUserLabel"></param>
+        /// <param name="placeholders"></param>
+        /// <param name="color"></param>
+        public AdvancedPopupPage(string message, CallbackLoginDelegate callbackLoginAction, string successButton,
+            string saveUserLabel, (string username, string password) placeholders, Color color = default)
+        {
+            InitializeComponent();
+
+            var (usernameHolder, passwordHolder) = placeholders;
+
+            MainStack.BackgroundColor = color;
+            CallbackLoginMethod = callbackLoginAction;
+
+            Animation = new ScaleAnimation()
+            {
+                PositionIn = MoveAnimationOptions.Center,
+                PositionOut = MoveAnimationOptions.Center,
+                DurationIn = 400,
+                DurationOut = 300,
+                EasingIn = Easing.SinOut,
+                EasingOut = Easing.SinIn,
+                ScaleIn = 1.2,
+                ScaleOut = 0.8,
+                HasBackgroundAnimation = true
+            };
+
+            SetupStack(LayoutOptions.Center, LayoutOptions.Center, 800);
+            SetupGrid(4, 3);
+
+            MessageLabel.Text = message;
+            MainGrid.Children.Add(MessageLabel, 0, 3, 0, 1);
+
+            UsernameEntry.Placeholder = usernameHolder;
+            UsernameEntry.WidthRequest = 500;
+            MainGrid.Children.Add(UsernameEntry, 0, 3, 1, 1);
+
+            PasswordEntry.SetPlaceholders(passwordHolder);
+            PasswordEntry.WidthRequest = 500;
+            MainGrid.Children.Add(PasswordEntry, 0, 3, 2, 1);
+
+            SaveUserLabel.Text = saveUserLabel;
+            SaveUserLabel.WidthRequest = 150;
+            MainGrid.Children.Add(OkButton, 0, 3);
+
+            SaveUserSwitch.WidthRequest = 100;
+            MainGrid.Children.Add(OkButton, 1, 3);
+
+            OkButton.Text = successButton;
+            OkButton.WidthRequest = 150;
+            MainGrid.Children.Add(OkButton, 2, 3);
+        }
+
+        private void SetupGrid(int rows, int columns)
+        {
+            if(rows < 1) throw new ArgumentException($@"There has to exist at least 1 row", nameof(rows));
+            if(columns < 1) throw new ArgumentException($@"There has to exist at least 1 column", nameof(columns));
+
+            for (var i = 0; i < columns; i++)
+            {
+                MainGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(50, GridUnitType.Star) });
+            }
+
+            for (var i = 0; i < rows; i++)
+            {
+                MainGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(50, GridUnitType.Star) });
+            }
+        }
+
+        private void SetupStack(LayoutOptions verticalAlignment, LayoutOptions horizontalAlignment,  double request = default)
+        {
+            MainStack.VerticalOptions = verticalAlignment;
+            MainStack.HorizontalOptions = horizontalAlignment;
+
+            if (request != default) MainGrid.WidthRequest = request;
+        }
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -113,21 +216,22 @@ namespace Wolf.Utility.Xamarin.Views
 
         private void CloseButton_OnClicked(object sender, EventArgs e)
         {
-            CallbackMethod?.Invoke(false);
+            CallbackConfirmationMethod?.Invoke(false);
 
             Rg.Plugins.Popup.Services.PopupNavigation.Instance.RemovePageAsync(this);
         }
 
         private void OkButton_OnClicked(object sender, EventArgs e)
         {
-            CallbackMethod?.Invoke(true);
+            CallbackConfirmationMethod?.Invoke(true);
+            CallbackLoginMethod?.Invoke(SaveUserSwitch.IsToggled, (UsernameEntry.Text, PasswordEntry.Text));
 
             Rg.Plugins.Popup.Services.PopupNavigation.Instance.RemovePageAsync(this);
         }
 
         protected override bool OnBackgroundClicked()
         {
-            CallbackMethod?.Invoke(false);
+            CallbackConfirmationMethod?.Invoke(false);
 
             return base.OnBackgroundClicked();
         }

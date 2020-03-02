@@ -14,17 +14,17 @@ namespace Wolf.Utility.Xamarin.TriggerActions
     {
         public string IconImageName { get; set; }
 
-        public string EntryPasswordName { get; set; }
+        public string EntryPasswordHidden { get; set; }
 
-        public string EntryTextName { get; set; }
+        public string EntryPasswordShown { get; set; }
 
         protected override void Invoke(Button sender)
         {
             // get the runtime references 
             // for our Elements from our custom control
             var imageIconView = ((Grid)sender.Parent).FindByName<Image>(IconImageName);
-            var entryPasswordView = ((Grid)((Grid)sender.Parent).Parent).FindByName<Entry>(EntryPasswordName);
-            var entryTextView = ((Grid)((Grid)sender.Parent).Parent).FindByName<Entry>(EntryTextName);
+            var entryPasswordView = ((Grid)((Grid)sender.Parent).Parent).FindByName<Entry>(EntryPasswordHidden);
+            var entryTextView = ((Grid)((Grid)sender.Parent).Parent).FindByName<Entry>(EntryPasswordShown);
 
             // Switch visibility of Password 
             // Entry field and Text Entry fields
