@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
-             xmlns:elements="clr-namespace:Wolf.Utility.Xamarin.Elements;assembly=Wolf.Utility.Xamarin"
              mc:Ignorable="d"
              x:Class="Wolf.Utility.Xamarin.Views.AdvancedPopupPage">
     
@@ -19,7 +18,7 @@
         <!--
         Place Holder StackLayout
         
-        Visually doesn't show them, but allows them to be added programatically to the right spots, as order of them should stay the same even if more rows are added.
+        Visually doesn't show them, but allows them to be added programatically to the right spots, as position of them depends on the mode requested.
         -->
         <StackLayout IsVisible="False">
             <Label x:Name="MessageLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
@@ -27,8 +26,7 @@
 
             <Entry x:Name="UsernameEntry" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
-            <elements:PasswordEntry x:Name="PasswordEntry" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-            <Switch x:Name="SaveUserSwitch" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            <Switch x:Name="SaveUserSwitch" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"/>
             <Label x:Name="SaveUserLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
 

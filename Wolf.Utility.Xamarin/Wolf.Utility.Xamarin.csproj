@@ -5,14 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TriggerActions\Resources\hidepasswordicon.png" />
-    <None Remove="TriggerActions\Resources\showpasswordicon.png" />
+    <None Remove="Elements\Resources\hidepasswordicon.png" />
+    <None Remove="Elements\Resources\showpasswordicon.png" />
     <None Remove="Views\PopupPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="TriggerActions\Resources\hidepasswordicon.png" />
-    <EmbeddedResource Include="TriggerActions\Resources\showpasswordicon.png" />
+    <EmbeddedResource Include="Elements\Resources\hidepasswordicon.png" />
+    <EmbeddedResource Include="Elements\Resources\showpasswordicon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="TriggerActions\Resources\Icons.Designer.cs">
+    <Compile Update="Elements\Resources\Icons.Designer.cs">
       <DependentUpon>Icons.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="TriggerActions\Resources\Icons.resx">
+    <EmbeddedResource Update="Elements\Resources\Icons.resx">
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Rg.Plugins.Popup.Animations;
 using Rg.Plugins.Popup.Enums;
+using Wolf.Utility.Xamarin.Elements;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -23,6 +24,8 @@ namespace Wolf.Utility.Xamarin.Views
 
         public delegate void CallbackLoginDelegate(bool save, (string username, string password) user);
         public CallbackLoginDelegate CallbackLoginMethod { get; private set; }
+
+        private PasswordEntry passwordEntry;
 
 
         /// <summary>
@@ -142,29 +145,35 @@ namespace Wolf.Utility.Xamarin.Views
             };
 
             SetupStack(LayoutOptions.Center, LayoutOptions.Center, 800);
-            SetupGrid(4, 3);
+            SetupGrid(5, 2);
 
             MessageLabel.Text = message;
-            MainGrid.Children.Add(MessageLabel, 0, 3, 0, 1);
+            MainGrid.Children.Add(MessageLabel, 0, 0 );
+            Grid.SetColumnSpan(MessageLabel, 2);
 
             UsernameEntry.Placeholder = usernameHolder;
             UsernameEntry.WidthRequest = 500;
-            MainGrid.Children.Add(UsernameEntry, 0, 3, 1, 1);
+            MainGrid.Children.Add(UsernameEntry, 0, 1);
+            Grid.SetColumnSpan(UsernameEntry, 2);
 
-            PasswordEntry.SetPlaceholders(passwordHolder);
-            PasswordEntry.WidthRequest = 500;
-            MainGrid.Children.Add(PasswordEntry, 0, 3, 2, 1);
-
+            passwordEntry = new PasswordEntry(passwordHolder)
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand, VerticalOptions = LayoutOptions.CenterAndExpand,
+                WidthRequest = 500
+            };
+            MainGrid.Children.Add(passwordEntry, 0,2);
+            Grid.SetColumnSpan(passwordEntry, 2);
+            
             SaveUserLabel.Text = saveUserLabel;
             SaveUserLabel.WidthRequest = 150;
-            MainGrid.Children.Add(OkButton, 0, 3);
+            MainGrid.Children.Add(SaveUserLabel, 0, 3);
 
-            SaveUserSwitch.WidthRequest = 100;
-            MainGrid.Children.Add(OkButton, 1, 3);
+            MainGrid.Children.Add(SaveUserSwitch, 1, 3);
 
             OkButton.Text = successButton;
-            OkButton.WidthRequest = 150;
-            MainGrid.Children.Add(OkButton, 2, 3);
+            OkButton.WidthRequest = 300;
+            MainGrid.Children.Add(OkButton, 0, 4);
+            Grid.SetColumnSpan(OkButton, 2);
         }
 
         private void SetupGrid(int rows, int columns)
@@ -224,7 +233,7 @@ namespace Wolf.Utility.Xamarin.Views
         private void OkButton_OnClicked(object sender, EventArgs e)
         {
             CallbackConfirmationMethod?.Invoke(true);
-            CallbackLoginMethod?.Invoke(SaveUserSwitch.IsToggled, (UsernameEntry.Text, PasswordEntry.Text));
+            CallbackLoginMethod?.Invoke(SaveUserSwitch.IsToggled, (UsernameEntry.Text, passwordEntry?.Text));
 
             Rg.Plugins.Popup.Services.PopupNavigation.Instance.RemovePageAsync(this);
         }
@@ -232,7 +241,8 @@ namespace Wolf.Utility.Xamarin.Views
         protected override bool OnBackgroundClicked()
         {
             CallbackConfirmationMethod?.Invoke(false);
-
+            CallbackLoginMethod?.Invoke(SaveUserSwitch.IsToggled, (UsernameEntry.Text, passwordEntry?.Text));
+            
             return base.OnBackgroundClicked();
         }
     }

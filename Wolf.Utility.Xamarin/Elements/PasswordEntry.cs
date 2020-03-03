@@ -5,14 +5,13 @@ using System.IO;
 using System.Text;
 using Wolf.Utility.Main.Logging;
 using Wolf.Utility.Main.Logging.Enum;
-using Wolf.Utility.Xamarin.TriggerActions;
-using Wolf.Utility.Xamarin.TriggerActions.Resources;
+using Wolf.Utility.Xamarin.Elements.Resources;
 using Xamarin.Forms;
 
 namespace Wolf.Utility.Xamarin.Elements
 {
     [SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable")]
-    public class PasswordEntry : StackLayout
+    public class PasswordEntry : ContentView
     {
         private Entry PasswordHidden;
         private Entry PasswordShown;
@@ -22,57 +21,53 @@ namespace Wolf.Utility.Xamarin.Elements
         private Grid InnerGrid;
         private Grid OuterGrid;
 
-        public string Text => PasswordShown.Text;
+        public string Text => PasswordShown.IsVisible ? PasswordShown.Text : PasswordHidden.Text;
 
         private string ShownText => PasswordShown.Text;
         private string HiddenText => PasswordHidden.Text;
         
-        public PasswordEntry()
+        public PasswordEntry(string placeholder)
         {
-            CreateViewElements();
+            CreateViewElements(placeholder);
 
             BindingContext = this;
 
-            var pathShown = nameof(ShownText);
-            var pathHidden = nameof(HiddenText);
+            var (pathShown, pathHidden) = (nameof(ShownText), nameof(HiddenText));
 
-            Logging.Log(LogType.Information,
-                $"{nameof(pathShown)} => {pathShown}; {nameof(pathHidden)} => {pathHidden}");
-
-            if (pathShown == null || pathHidden == null)
-                throw new ArgumentNullException($"{nameof(pathHidden)} or {nameof(pathShown)}",
-                    $@"Getting the nameof either {nameof(ShownText)} or {nameof(HiddenText)} returned null");
-
-            PasswordHidden.SetBinding(Entry.TextProperty, pathShown, BindingMode.TwoWay);
             PasswordShown.SetBinding(Entry.TextProperty, pathHidden, BindingMode.TwoWay);
-            
+            PasswordHidden.SetBinding(Entry.TextProperty, pathShown, BindingMode.TwoWay);
+
             InnerGrid.Children.Add(PasswordButton, 0, 0);
             InnerGrid.Children.Add(PasswordButtonIcon, 0, 0);
             
             OuterGrid.Children.Add(PasswordHidden, 0, 0);
             OuterGrid.Children.Add(PasswordShown, 0, 0);
             OuterGrid.Children.Add(InnerGrid, 0, 0);
+
+            Content = OuterGrid;
         }
 
-        private void CreateViewElements()
+        private void CreateViewElements(string placeholder)
         {
             PasswordHidden = new Entry()
             {
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
                 IsPassword = true,
+                Placeholder = placeholder,
             };
 
             PasswordShown = new Entry()
             {
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
                 HorizontalTextAlignment = TextAlignment.Center,
                 VerticalTextAlignment = TextAlignment.Center,
                 IsPassword = false,
-                IsVisible = false
+                IsVisible = false,
+                Placeholder = placeholder,
             };
 
             PasswordButtonIcon = new Image()
@@ -80,6 +75,7 @@ namespace Wolf.Utility.Xamarin.Elements
                 HeightRequest = 25,
                 HorizontalOptions = LayoutOptions.Fill,
                 InputTransparent = true,
+                BackgroundColor = Color.Transparent,
                 Source = ImageSource.FromStream(() => new MemoryStream(Icons.showpasswordicon)),
                 VerticalOptions = LayoutOptions.Fill,
                 WidthRequest = 25
@@ -89,22 +85,8 @@ namespace Wolf.Utility.Xamarin.Elements
             {
                 BackgroundColor = Color.Transparent,
                 Margin = new Thickness(-4, -6, -4, -6),
-                Triggers =
-                {
-                    new EventTrigger()
-                    {
-                        Event = "Clicked",
-                        Actions =
-                        {
-                            new ShowPasswordTriggerAction()
-                            {
-                                EntryPasswordHidden = nameof(PasswordHidden),
-                                EntryPasswordShown = nameof(PasswordShown), IconImageName = nameof(PasswordButtonIcon)
-                            }
-                        }
-                    }
-                }
             };
+            PasswordButton.Clicked += PasswordButton_Clicked;
 
             InnerGrid = new Grid()
             {
@@ -125,10 +107,32 @@ namespace Wolf.Utility.Xamarin.Elements
             };
         }
 
-        public void SetPlaceholders(string placeholder)
+        private void PasswordButton_Clicked(object sender, EventArgs e)
         {
-            PasswordHidden.Placeholder = placeholder;
-            PasswordShown.Placeholder = placeholder;
+            // Switch visibility of Password 
+            // Entry field and Text Entry fields
+            PasswordHidden.IsVisible = !PasswordHidden.IsVisible;
+            PasswordShown.IsVisible = !PasswordShown.IsVisible;
+
+            // update the Show/Hide button Icon states 
+            if (PasswordShown.IsVisible)
+            {
+                // Password is not Visible state
+                PasswordButtonIcon.Source = ImageSource.FromStream(() => new MemoryStream(Icons.showpasswordicon));
+
+                // Setting up Entry curser focus
+                PasswordShown.Focus();
+                PasswordShown.Text = PasswordHidden.Text;
+            }
+            else
+            {
+                // Password is Visible state
+                PasswordButtonIcon.Source = ImageSource.FromStream(() => new MemoryStream(Icons.hidepasswordicon));
+
+                // Setting up Entry curser focus
+                PasswordHidden.Focus();
+                PasswordHidden.Text = PasswordShown.Text;
+            }
         }
     }
 }
