@@ -21,7 +21,15 @@ namespace Wolf.Utility.Xamarin.Elements
         private Grid InnerGrid;
         private Grid OuterGrid;
 
-        public string Text => PasswordShown.IsVisible ? PasswordShown.Text : PasswordHidden.Text;
+        public string Text 
+        {
+            get => PasswordShown.IsVisible ? PasswordShown.Text : PasswordHidden.Text;
+            set
+            {
+                if (PasswordShown.IsVisible) PasswordShown.Text = value;
+                else PasswordHidden.Text = value;
+            }
+        } 
 
         private string ShownText => PasswordShown.Text;
         private string HiddenText => PasswordHidden.Text;
