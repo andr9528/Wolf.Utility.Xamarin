@@ -22,7 +22,7 @@
         -->
         <StackLayout IsVisible="False">
             <Label x:Name="MessageLabel" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
-                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" LineBreakMode="WordWrap" Margin="10"/>
 
             <Entry x:Name="UsernameEntry" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
