@@ -16,6 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ooui" Version="0.12.309" />
+    <PackageReference Include="Ooui.AspNetCore" Version="0.12.309" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
     <PackageReference Include="Ultz.XNFC" Version="1.1.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.4.0.936621-pre1" />
